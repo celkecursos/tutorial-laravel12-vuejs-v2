@@ -117,6 +117,27 @@ ssh usuario-do-servidor@ip-do-servidor-vps
 ssh root@72.60.151.152
 ```
 
+Usar o terminal conectado ao servidor para listar os arquivo.
+```
+cd /caminho-dos-arquivos-no-servidor
+```
+```
+cd /home/user/htdocs/srv1149500.hstgr.cloud
+```
+
+Listar os arquivo.
+```
+ls
+```
+
+Remover os arquivos do servidor.
+```
+rm -rf /home/user/htdocs/endereco-do-servidor/{*,.*}
+```
+```
+rm -rf /home/user/htdocs/srv1149500.hstgr.cloud/{*,.*}
+```
+
 ## Como enviar o projeto do PC para o GitHub.
 
 Inicializar um novo repositorio GIT.
@@ -146,7 +167,7 @@ git commit -m "Base do projeto"
 
 Adicionar um repositório remoto ao repositório local.
 ```
-git remote add origin https://github.com/celkecursos/tutorial-meu-projeto-laravel-docker.git
+git remote add origin https://github.com/celkecursos/tutorial-laravel12-vuejs-v2.git
 ```
 
 Enviar os commits locais para um repositório remoto.
@@ -187,6 +208,127 @@ ssh -T git@github.com
 
 - Mensagem de conexão realizada com sucesso. Hi nome-usuario! You've successfully authenticated, but GitHub does not provide shell access.
 
+## Clonar o projeto do GitHub para a VPS
+
+Baixar os arquivos do GitHub para a VPS.
+```
+git clone -b <branch_name> <ssh_repository_url> .
+```
+
+Duplicar o arquivo ".env.example" e renomear para ".env".
+```
+cp .env.example .env
+```
+
+Abrir o arquivo ".env" e alterar as variaveis de ambiente.
+```
+nano .env
+```
+
+Alterar o valor das variaveis de ambiente.
+```
+APP_NAME=Celke
+APP_ENV=production
+APP_KEY=
+APP_DEBUG=false
+APP_TIMEZONE=America/Sao_Paulo
+APP_URL=https://srv566492.hstgr.cloud 
+```
+
+Alterar as variaveis de conexão com banco de dados.
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=celke
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+- Ctrl + O e enter para salvar.
+- Ctrl + X para sair.
+
+Instalar as dependências do PHP.
+```
+composer install
+```
+
+Instalar as dependências do Node.js. Necessário ter o Node.js instalado no servidor. Abaixo tem as orientações como instalar o Node.js no servidor.
+```
+npm run build
+```
+
+Quando gerar o erro "sh: 1: vite: not found", necessário instalar o Vite. Executar e Etapa 1, Etapa 2 e Etapa 3.
+```
+npm install
+```
+
+Etapa 1 - Verificar se o Vite está instalado.
+```
+npx vite --version
+```
+
+Etapa 2 - Gerar a build. Compilar o código-fonte do projeto.
+```
+npm run build
+```
+
+Alterar a propriedade do diretório.
+```
+sudo chown -R user:user /home/user/htdocs/srv1149500.hstgr.cloud
+```
+
+Reiniciar Nginx.
+```
+sudo systemctl restart nginx
+```
+
+Limpar cache.
+```
+php artisan config:clear
+```
+
+Gerar a chave.
+```
+php artisan key:generate
+```
+
+Executar as migrations para criar as tabelas e as colunas.
+```
+php artisan migrate
+```
+
+Executar seed com php artisan para cadastrar registros de testes.
+```
+php artisan db:seed
+```
+
+## Instalar o Node.js no servidor.
+
+Atualizar a lista de pacotes disponíveis.
+```
+sudo apt update
+```
+
+Adicionar no repositório o Node.js 22.x.
+```
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+```
+
+Instalar o Node.js. -y automatizar a instalação de pacotes sem solicitar a confirmação manual do usuário.
+```
+sudo apt install -y nodejs
+```
+
+Reiniciar Nginx.
+```
+sudo systemctl restart nginx
+```
+
+Limpar cache.
+```
+php artisan config:clear
+```
 
 
 ## Sequência para criar o projeto
